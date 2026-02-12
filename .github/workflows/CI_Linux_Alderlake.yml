@@ -20,15 +20,34 @@ jobs:
       with:
         python-version: '3.10'
     
+    - name: Cache Python packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install scipy numpy
     
+    - name: Cache Google Benchmark
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/benchmark
+        key: ${{ runner.os }}-benchmark-1.8.3
+        restore-keys: |
+          ${{ runner.os }}-benchmark-
+    
     - name: Install Google Benchmark
       run: |
         sudo apt-get update
         sudo apt-get install -y libbenchmark-dev
+        # Cria um arquivo de marcação para o cache
+        mkdir -p ~/.cache/benchmark
+        touch ~/.cache/benchmark/installed
     
     - name: Benchmark
       shell: bash
