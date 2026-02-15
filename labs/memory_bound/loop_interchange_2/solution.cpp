@@ -30,7 +30,7 @@ static void filterVertically(uint8_t *output, const uint8_t *input,
     }
   }
 
-  int dots[width];
+  int* dots = new int[width];
     
   for(int i = 0; i < width; i++) {
     dots[i] = 0;
@@ -52,6 +52,8 @@ static void filterVertically(uint8_t *output, const uint8_t *input,
       dots[c] = 0;
     }
   }
+  
+  delete[] dots;
 
   // Bottom part of line, partial kernel
   for (int r = std::max(radius, height - radius); r < height; r++) {
